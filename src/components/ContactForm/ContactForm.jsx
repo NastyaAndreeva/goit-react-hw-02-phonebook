@@ -47,7 +47,7 @@ export class ContactForm extends Component {
               required
             />
           </label>
-          <Button type="submit">Send</Button>
+          <Button type="submit">Add contact</Button>
         </Form>
       </Formik>
     );
