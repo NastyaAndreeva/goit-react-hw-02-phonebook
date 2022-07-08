@@ -2,6 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Component } from 'react';
 import styled from 'styled-components';
 import * as Yup from 'yup';
+import PropTypes from 'prop-types';
 import { Box } from 'components/Box';
 import { Button } from 'ui/Button';
 
@@ -56,3 +57,7 @@ export class ContactForm extends Component {
     );
   }
 }
+
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

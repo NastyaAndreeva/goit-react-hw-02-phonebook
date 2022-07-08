@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { RiContactsBook2Line } from 'react-icons/ri';
 import { Button } from 'ui/Button';
 import { theme } from 'stylesConfig/theme';
@@ -32,4 +33,9 @@ export const FriendList = ({ friends, onDeleteContact }) => {
       ))}
     </FriendListStyled>
   );
+};
+
+FriendList.propTypes = {
+  friends: PropTypes.array.isRequired,
+  onDeleteContact: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
