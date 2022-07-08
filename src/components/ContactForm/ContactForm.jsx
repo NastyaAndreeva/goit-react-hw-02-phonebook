@@ -1,16 +1,17 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Component } from 'react';
 import styled from 'styled-components';
+import * as Yup from 'yup';
+import { Box } from 'components/Box';
+import { Button } from 'ui/Button';
 
-const Button = styled.button`
-  border: none;
-  outline: none;
-  padding: 10px;
-  display: block;
-  margin-top: 10px;
-  border-radius: 10px;
-  background-color: #061818;
-  color: #fff;
+const validationSchema = Yup.object({
+  name: Yup.string().max(16).required('Required'),
+  number: Yup.number().positive().required('Required'),
+});
+
+const Label = styled.label`
+  margin-bottom: 10px;
 `;
 
 const initialValues = {
@@ -25,29 +26,31 @@ export class ContactForm extends Component {
   };
   render() {
     return (
-      <Formik initialValues={initialValues} onSubmit={this.handleSubmit}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={this.handleSubmit}
+        validationSchema={validationSchema}
+      >
         <Form autoComplete="off">
-          <label htmlFor="name">
-            Name
-            <Field
-              type="text"
-              name="name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-            />
-          </label>
-          <label htmlFor="number">
-            Number
-            <Field
-              type="tel"
-              name="number"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              required
-            />
-          </label>
-          <Button type="submit">Add contact</Button>
+          <Box
+            width="400px"
+            margin="0 auto"
+            display="flex"
+            flexDirection="column"
+            as="section"
+          >
+            <Label htmlFor="name">
+              Name
+              <Field type="text" name="name" />
+              <ErrorMessage name="name" component="p" />
+            </Label>
+            <Label htmlFor="number">
+              Number
+              <Field type="tel" name="number" />
+              <ErrorMessage name="number" component="p" />
+            </Label>
+            <Button type="submit">Add contact</Button>
+          </Box>
         </Form>
       </Formik>
     );

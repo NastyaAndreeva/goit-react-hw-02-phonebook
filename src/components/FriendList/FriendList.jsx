@@ -1,31 +1,35 @@
 import styled from 'styled-components';
+import { RiContactsBook2Line } from 'react-icons/ri';
+import { Button } from 'ui/Button';
+import { theme } from 'stylesConfig/theme';
+
+const FriendListStyled = styled.ul`
+  list-style: none;
+  padding: 0;
+`;
 
 const FriendListItem = styled.li`
   display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  span {
+    margin: 5px;
+  }
 `;
 
-const Button = styled.button`
-  border: none;
-  outline: none;
-  padding: 10px;
-  display: block;
-  margin-top: 10px;
-  border-radius: 10px;
-  background-color: #9bcccc;
-  color: #0c0202;
-`;
-
-export const FriendList = ({ friends, onDelete }) => {
+export const FriendList = ({ friends, onDeleteContact }) => {
   return (
-    <ul friends={friends}>
+    <FriendListStyled friends={friends}>
       {friends.map(({ id, name, number }) => (
         <FriendListItem key={id}>
-          {name}: {number}{' '}
-          <Button type="button" onClick={onDelete}>
+          <RiContactsBook2Line fill={theme.colors.backgroundBlueBtn} />
+          <span>{name}: </span>
+          <span>{number}</span>
+          <Button type="button" onClick={() => onDeleteContact(id)}>
             Delete
           </Button>
         </FriendListItem>
       ))}
-    </ul>
+    </FriendListStyled>
   );
 };

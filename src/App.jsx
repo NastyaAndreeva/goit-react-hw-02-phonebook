@@ -1,9 +1,9 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
-import Notiflix from 'notiflix';
-import { FriendList } from 'components/FriendList/FriendList';
-import { ContactForm } from 'components/ContactForm/ContactForm';
-import { Filter } from 'components/Filter/Filter';
+import { FriendList } from 'components/FriendList';
+import { ContactForm } from 'components/ContactForm';
+import { Filter } from 'components/Filter';
+import { Box } from 'components/Box';
 
 export class App extends Component {
   state = {
@@ -25,7 +25,7 @@ export class App extends Component {
     const isAlreadyAdded = this.dataValidation(data);
 
     if (isAlreadyAdded) {
-      Notiflix.Notify.failure(`${data.name} is already in your contacts`);
+      alert(`${data.name} is already in your contacts`);
       return;
     }
 
@@ -37,6 +37,12 @@ export class App extends Component {
 
     this.setState(state => ({
       contacts: [contact, ...state.contacts],
+    }));
+  };
+
+  deleteContact = contactId => {
+    this.setState(state => ({
+      contacts: state.contacts.filter(contact => contact.id !== contactId),
     }));
   };
 
@@ -53,26 +59,34 @@ export class App extends Component {
     );
   };
 
-  deleteContact(e) {
-    console.log('event', e.currentTarget);
-  }
-
   render() {
     const friendList = this.getFilteredContacts();
 
     return (
-      <div>
-        <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.addContact} />
-        <h2>Contacts</h2>
-        <label htmlFor="filter">
-          Find contacts by name
-          <Filter value={this.state.filter} onChange={this.changeFilter} />
-        </label>
-        {friendList.length !== 0 && (
-          <FriendList friends={friendList} onDelete={this.deleteContact} />
-        )}
-      </div>
+      <>
+        <Box
+          width="400px"
+          margin="0 auto"
+          display="flex"
+          flexDirection="column"
+          as="section"
+        >
+          <h1>Phonebook</h1>
+          <ContactForm onSubmit={this.addContact} />
+
+          <h2>Contacts</h2>
+          <label htmlFor="filter">
+            Find contacts by name
+            <Filter value={this.state.filter} onChange={this.changeFilter} />
+          </label>
+          {friendList.length !== 0 && (
+            <FriendList
+              friends={friendList}
+              onDeleteContact={this.deleteContact}
+            />
+          )}
+        </Box>
+      </>
     );
   }
 }
